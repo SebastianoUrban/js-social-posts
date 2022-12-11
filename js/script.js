@@ -92,13 +92,48 @@ const posts = [
 
 
 const containrElem = document.getElementById('container');
+const likeBtns = document.getElementsByClassName('like-button');
 
 for (let i = 0; i < posts.length; i++){
     addPost(posts[i], containrElem);
 }
 
+const postLiked = [];
 
 
+for (let i = 0; i < likeBtns.length; i++){
+    likeBtns[i].addEventListener('click', () => {
+        if (postLiked.includes(i+1)) {
+            likeBtns[i].classList.remove('like-button--liked');
+            posts[i]['likes']--;
+            postLiked.pop(i+1);
+        } else {
+            likeBtns[i].classList.add('like-button--liked');
+            posts[i]['likes']++;
+            postLiked.push(i+1);
+        }
+
+        const likeCounter = document.getElementById(`like-counter-${i+1}`);
+        likeCounter.innerHTML = posts[i]['likes'];
+        console.log(postLiked)
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Function for create the post
 function addPost(object, parent) {
     parent.innerHTML += `
     <div class="post">
@@ -120,13 +155,13 @@ function addPost(object, parent) {
         <div class="post__footer">
             <div class="likes js-likes">
                 <div class="likes__cta">
-                    <a class="like-button  js-like-button" href="#" data-postid="1">
+                    <a class="like-button  js-like-button" data-postid=${object['id']}>
                         <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                         <span class="like-button__label">Mi Piace</span>
                     </a>
                 </div>
                 <div class="likes__counter">
-                    Piace a <b id="like-counter-1" class="js-likes-counter">${object['likes']}</b> persone
+                    Piace a <b id="like-counter-${object['id']}" class="js-likes-counter">${object['likes']}</b> persone
                 </div>
             </div> 
         </div>            
